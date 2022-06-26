@@ -43,22 +43,23 @@ router.post('/data/:id', (req, res) => {
 
   // log the body, using the debug body instance
   bodyDebug(req.body.toString())
-
+  console.log('POST', deviceId, req.body.toString())
   router.__dataStore[deviceId].push(req.body)
-
+  res.setHeader('Access-Control-Allow-Origin', '*')
   res.statusCode = 200
   res.end()
 })
 
 router.get('/data/:id', (req, res) => {
   const deviceId = req.params.id
-
+  res.setHeader('Access-Control-Allow-Origin', '*')
   if (!router.__dataStore[deviceId] || router.__dataStore[deviceId].length === 0) {
+    console.log('GET no data', deviceId)
     res.statusCode = 404
     res.end()
   } else {
     const data = router.__dataStore[deviceId].shift()
-
+    console.log('GET with data', deviceId)
     res.statusCode = 200
     res.end(data)
   }
